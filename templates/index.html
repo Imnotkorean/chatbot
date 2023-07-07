@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat with ChatGPT</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('form').on('submit', function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: '/chat',
+                    data: $('form').serialize(),
+                    success: function (response) {
+                        $('#chat-container').append('<p><strong>You:</strong> ' + $('input[name="user_input"]').val() + '</p>');
+                        $('#chat-container').append('<p><strong>ChatGPT:</strong> ' + response.response + '</p>');
+                        $('input[name="user_input"]').val('');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Chat with ChatGPT</h1>
+    <div id="chat-container"></div>
+    <form action="/chat" method="post">
+        <input type="text" name="user_input" autocomplete="off" placeholder="Your message" required>
+        <input type="submit" value="Send">
+    </form>
+</body>
+</html>
